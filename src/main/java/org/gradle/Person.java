@@ -1,6 +1,7 @@
 package org.gradle;
 
 import com.google.common.base.Objects;
+import com.google.common.base.Preconditions;
 
 public class Person {
     private String name;
@@ -48,30 +49,33 @@ public class Person {
 
     @Override
     public boolean equals(Object object) {
-        if(object instanceof Person) {
+        if (object instanceof Person) {
             Person that = (Person) object;
-            return Objects.equal(this.name, that.name) 
-                    && Objects.equal(this.age, that.age) 
+            return Objects.equal(this.name, that.name)
+                    && Objects.equal(this.age, that.age)
                     && Objects.equal(this.isTall, that.isTall);
         }
         return false;
     }
-    
+
     @Override
     public int hashCode() {
         return Objects.hashCode(name, age, isTall);
     }
-    
+
     @Override
     public String toString() {
-        return Objects.toStringHelper(this)
-                .add("name", name)
-                .add("age", age)
-                .add("isTall", isTall)
-                .toString();
+        return Objects.toStringHelper(this).add("name", name).add("age", age)
+                .add("isTall", isTall).toString();
     }
-    
+
     public String preferredName() {
         return Objects.firstNonNull(shortName, name);
+    }
+
+    public boolean canDrink() {
+        Preconditions.checkState(age != null,
+                "Can't have a null age and drink!");
+        return age >= 21;
     }
 }

@@ -12,4 +12,5 @@ MANIFEST.MF
 .DS_Store
 
 build/
-
+.gradle/
+.metadata/
