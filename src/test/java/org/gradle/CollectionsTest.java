@@ -2,6 +2,7 @@ package org.gradle;
 
 import static org.junit.Assert.assertTrue;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -94,14 +95,8 @@ public class CollectionsTest {
     
     @Test
     public void testMulitSet() {
-        words.add("The");
-        words.add("The");
-        words.add("The");
-        words.add("taco");
-        words.add("taco");
-        words.add("was");
-        words.add("tasty");
-        
+        words.addAll(Arrays.asList("The", "The", "The", "taco", "taco", "was", "tasty"));
+
         //counting the times words appear in a list
         Map<String, Integer> counts = new HashMap<String, Integer>();
         for (String word : words) {
