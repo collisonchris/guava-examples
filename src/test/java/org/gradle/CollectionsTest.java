@@ -3,6 +3,7 @@ package org.gradle;
 import static org.junit.Assert.assertTrue;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -82,10 +83,16 @@ public class CollectionsTest {
         
         assertTrue(personPetMap.size() == 5);
         
+        //get collection of pets
+        Collection<Pet> myPets = personPetMap.get(chris);
+        
+        assertTrue(myPets.size() == 5);
+
         //petey's head fell off
         personPetMap.remove(chris, petey);
         
         assertTrue(personPetMap.size() == 4);
+        assertTrue(myPets.size() == 4);
         
         //no more pets for Chris!
         personPetMap.removeAll(chris);
@@ -94,7 +101,7 @@ public class CollectionsTest {
     }
     
     @Test
-    public void testMulitSet() {
+    public void testMulitSetOperations() {
         words.addAll(Arrays.asList("The", "The", "The", "taco", "taco", "was", "tasty"));
 
         //counting the times words appear in a list
