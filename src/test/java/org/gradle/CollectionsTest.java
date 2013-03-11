@@ -1,11 +1,11 @@
 package org.gradle;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -13,17 +13,20 @@ import java.util.Set;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.google.common.base.Function;
 import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.HashBiMap;
 import com.google.common.collect.HashMultiset;
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
+import com.google.common.collect.MapMaker;
+import com.google.common.collect.Maps;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.Multiset;
 import com.google.common.collect.Sets;
 
 public class CollectionsTest {
-    
-    private static final ImmutableSet<String> SEASONS = ImmutableSet.of("Winter", "Spring", "Summer","Fall");
     
     private static final ImmutableSet<String> RGB = ImmutableSet.of("Red", "Green", "Blue");
     
@@ -32,7 +35,6 @@ public class CollectionsTest {
     private static List<String> words = Lists.newArrayList();
     
     private Person chris;
-    private Person tom;
     
     private Pet fido;
     private Pet rover;
@@ -43,7 +45,6 @@ public class CollectionsTest {
     @Before
     public void before() {
         chris = new Person("Christopher", 23, Boolean.FALSE, "Chris");
-        tom = new Person("Thomas", 19, Boolean.TRUE, null);
         fido = new Pet("Fido", PetType.DOG);
         rover = new Pet("Rover", PetType.DOG);
         socks = new Pet("Socks", PetType.CAT);
@@ -61,6 +62,22 @@ public class CollectionsTest {
                     .build();
           
           assertTrue(LOTS_OF_COLORS.contains("Red"));
+    }
+    
+    @SuppressWarnings("unused")
+    @Test
+    public void testStaticCollectionConstructors() {
+        List<String> exampleList = Lists.newArrayList();
+        exampleList = Lists.newLinkedList();
+        
+        Set<String> exampleSet = Sets.newHashSet();
+        exampleSet = Sets.newLinkedHashSet();
+        exampleSet = Sets.newTreeSet();
+        
+        Map<String, String> exampleMap = Maps.newHashMap();
+        exampleMap = Maps.newLinkedHashMap();
+        exampleMap = Maps.newTreeMap();
+
     }
     
     
@@ -128,6 +145,50 @@ public class CollectionsTest {
         assertTrue(wordsMultiset.count("was") == 1);
         assertTrue(wordsMultiset.count("tasty") == 1);
         
+    }
+    
+    @Test
+    public void testBiMapOperations() {
+        /* Test with non-empty Map. */
+        Map<String, String> map = ImmutableMap.of(
+            "canada", "dollar",
+            "chile", "peso",
+            "switzerland", "franc");
+        HashBiMap<String, String> bimap = HashBiMap.create(map);
+        assertEquals("dollar", bimap.get("canada"));
+        //flip to check based on inverse
+        assertEquals("canada", bimap.inverse().get("dollar"));
+    }
+    
+    @Test 
+    public void testMapMaker() {
+        Map<String, String> childMap = Maps.newHashMap();
+        childMap.put("Iowa", "Hawkeyes");
+        childMap.put("ISU", "Cyclones");
+        childMap.put("UNI", "Panthers");
+        
+        Map<String, Map<String, String>> computingMap = makeComputingMap();
+        computingMap.put("Iowa Colleges", childMap);
+        
+        
+        Map<String, Map<String, String>> anotherComputingMap = makeComputingMapNew();
+        anotherComputingMap.put("Iowa Colleges", childMap);
+    }
+    
+    
+    /* Deprecated behavior! */
+    @SuppressWarnings("deprecation")
+    public static Map<String, Map<String, String>> makeComputingMap() {
+        return new MapMaker().makeComputingMap(new Function<String, Map<String, String>>() {
+            public Map<String, String> apply(String input) {
+                return Maps.newHashMap();
+            }
+        });
+    }
+    
+    /* non deprecated behavior! */
+    public static Map<String, Map<String, String>> makeComputingMapNew() {
+        return new MapMaker().weakKeys().makeMap();
     }
     
 }
