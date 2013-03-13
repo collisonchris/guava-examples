@@ -6,6 +6,7 @@ import static org.junit.Assert.assertTrue;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -19,6 +20,7 @@ import com.google.common.collect.HashBiMap;
 import com.google.common.collect.HashMultiset;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.google.common.collect.MapMaker;
 import com.google.common.collect.Maps;
@@ -188,7 +190,29 @@ public class CollectionsTest {
     
     /* non deprecated behavior! */
     public static Map<String, Map<String, String>> makeComputingMapNew() {
-        return new MapMaker().weakKeys().makeMap();
+        return new MapMaker().makeMap();
+    }
+    
+    @Test
+    public void interablesTransfomTests() {
+        List<Double> prices = Lists.newArrayList(Arrays.asList(20.00, 25.00, 40.00));
+        
+        //functional guava way
+        List<Double> discountedPrices = Lists.newArrayList(Iterables.transform(prices, new Function<Double, Double>() {
+            public Double apply(final Double from) {
+                return from *.90;
+            }
+        }));
+        //manual way
+        List<Double> manuallyDiscountedPrices = Lists.newArrayList();
+        
+        for(Double price: prices) {
+            manuallyDiscountedPrices.add(price * .90);
+        }
+
+        //different implementation, same results
+        assertTrue(discountedPrices.containsAll(manuallyDiscountedPrices));
+        assertTrue(manuallyDiscountedPrices.containsAll(discountedPrices));
     }
     
 }

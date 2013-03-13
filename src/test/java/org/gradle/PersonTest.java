@@ -8,12 +8,12 @@ public class PersonTest {
     Person chris;
     Person tom;
     Person jerry;
-    Person chrisCyborg;
+    Person chrisClone;
 
     @Before
     public void before() {
         chris = new Person("Christopher", 23, Boolean.FALSE, "Chris");
-        chrisCyborg = new Person("Christopher", 23, Boolean.FALSE, "Chris");
+        chrisClone = new Person("Christopher", 23, Boolean.FALSE, "Chris");
         tom = new Person("Thomas", 19, Boolean.TRUE, "Tom");
         jerry = new Person("Jerry", 23, Boolean.TRUE, "J");
         
@@ -57,8 +57,8 @@ public class PersonTest {
         assertEquals(1,chris.compareTo(tom));
         assertEquals(-1,chris.compareTo(jerry));
         
-        assertEquals(0,chris.compareTo(chrisCyborg));
-        assertEquals(0,chris.compareTo(chrisCyborg));
+        assertEquals(0,chris.compareTo(chrisClone));
+        assertEquals(0,chris.compareTo(chrisClone));
         
         
     }
