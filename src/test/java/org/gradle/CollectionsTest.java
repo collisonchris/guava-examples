@@ -3,10 +3,10 @@ package org.gradle;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -93,6 +93,25 @@ public class CollectionsTest {
      */
     @Test
     public void testMultiMapListOperations() {
+        //old way
+        Map<Person, List<Pet>> personPetListMap = new HashMap<Person, List<Pet>>();
+        List<Pet> chrisList = new ArrayList<Pet>();
+        chrisList.add(fido);
+        chrisList.add(rover);
+        chrisList.add(socks);
+        chrisList.add(boots);
+        chrisList.add(petey);
+        personPetListMap.put(chris, chrisList);
+        
+        assertTrue(personPetListMap.get(chris).size() == 5);
+        
+        personPetListMap.get(chris).remove(petey);
+        assertTrue(personPetListMap.get(chris).size() == 4);
+        
+        personPetListMap.get(chris).removeAll(chrisList);
+        assertTrue(personPetListMap.get(chris).size() == 0);
+        
+        //guava way, the child collection is determined by implementation type chosen here
         Multimap<Person, Pet> personPetMap = ArrayListMultimap.create();
         personPetMap.put(chris, fido);
         personPetMap.put(chris, rover);
@@ -123,7 +142,7 @@ public class CollectionsTest {
     public void testMulitSetOperations() {
         words.addAll(Arrays.asList("The", "The", "The", "taco", "taco", "was", "tasty"));
 
-        //counting the times words appear in a list
+        //counting the times words appear in a list manually
         Map<String, Integer> counts = new HashMap<String, Integer>();
         for (String word : words) {
           Integer count = counts.get(word);
@@ -133,6 +152,7 @@ public class CollectionsTest {
             counts.put(word, count + 1);
           }
         }
+        
         assertTrue(counts.get("The") == Integer.valueOf(3));
         assertTrue(counts.get("taco") == Integer.valueOf(2));
         assertTrue(counts.get("was") == Integer.valueOf(1));
@@ -175,6 +195,9 @@ public class CollectionsTest {
         
         Map<String, Map<String, String>> anotherComputingMap = makeComputingMapNew();
         anotherComputingMap.put("Iowa Colleges", childMap);
+        
+        //different implementation, but on the surface, same result
+        assertEquals(computingMap, anotherComputingMap);
     }
     
     

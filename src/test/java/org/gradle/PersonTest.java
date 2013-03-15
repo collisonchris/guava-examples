@@ -51,14 +51,14 @@ public class PersonTest {
     @Test
     public void comparatorTest() {
         //both work functionally the same way
+        assertEquals(1,chris.compareTo(tom));
         assertEquals(1,chris.oldCompareTo(tom));
+        
+        assertEquals(-1,chris.compareTo(jerry));
         assertEquals(-1,chris.oldCompareTo(jerry));
         
-        assertEquals(1,chris.compareTo(tom));
-        assertEquals(-1,chris.compareTo(jerry));
-        
         assertEquals(0,chris.compareTo(chrisClone));
-        assertEquals(0,chris.compareTo(chrisClone));
+        assertEquals(0,chris.oldCompareTo(chrisClone));
         
         
     }

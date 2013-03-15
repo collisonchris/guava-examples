@@ -80,12 +80,22 @@ public class Person implements Comparable<Person> {
         return Objects.firstNonNull(shortName, name);
     }
 
+    //normal null checking
+    public boolean oldCanDrink() {
+        if(age == null) {
+            throw new IllegalArgumentException("Can't have a null age and drink!");
+        }
+        return age >=21;
+    }
+    
+    //slightly better null checking!
     public boolean canDrink() {
-        Preconditions.checkState(age != null,
-                "Can't have a null age and drink!");
+        Preconditions.checkState(age != null, "Can't have a null age and drink!");
         return age >= 21;
     }
 
+    //Comparison requirements: use age as primary, use isTall as secondary criteria
+    
     public int oldCompareTo(Person that) {
         if(this.age > that.age || (this.age == that.age && this.isTall && !that.isTall)) {
             return 1;
